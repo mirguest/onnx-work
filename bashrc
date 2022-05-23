@@ -4,6 +4,15 @@ export ONNX_WORKSPACE=/tmp/$USER/onnx-workspace
 
 export ONNX_WORKSPACE_SCRIPT=$ONNX_WORKSPACE/work/bashrc
 
+onnx-cd() {
+    cd $ONNX_WORKSPACE
+}
+
+onnx-() {
+    setup-lcg
+    setup-py-local
+}
+
 onnx--() {
     source $ONNX_WORKSPACE_SCRIPT
 }
@@ -14,6 +23,12 @@ setup-lcg() {
 
 install-py-local() {
     pip install -t $ONNX_WORKSPACE/installed $*
+}
+
+install-py-local-() {
+    install-py-local numpy protobuf==3.16.0 onnx
+    install-py-local onnxruntime
+
 }
 
 setup-py-local() {
