@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export ONNX_WORKSPACE=/tmp/lint/onnx-workspace
+export ONNX_WORKSPACE=/tmp/$USER/onnx-workspace
 
 export ONNX_WORKSPACE_SCRIPT=$ONNX_WORKSPACE/work/bashrc
 
@@ -22,10 +22,13 @@ setup-py-local() {
 }
 
 onnx-model-co() { # checkout 
+    pushd $ONNX_WORKSPACE
     git clone https://github.com/onnx/onnx.git
+    popd
 }
 
 onnx-model-co-lfs() {
+    pushd $ONNX_WORKSPACE/models
     local path
     for path in $*; do
         if [ ! -f "$path" ]; then
@@ -34,4 +37,10 @@ onnx-model-co-lfs() {
         fi
         git lfs pull --include="$path" --exclude=""
     done
+    popd
 }
+
+onnx-model-co-lfs-() {
+    onnx-model-co-lfs vision/classification/vgg/model/vgg16-bn-7.onnx
+}
+
