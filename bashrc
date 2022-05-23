@@ -42,5 +42,6 @@ onnx-model-co-lfs() {
 
 onnx-model-co-lfs-() {
     onnx-model-co-lfs vision/classification/vgg/model/vgg16-bn-7.onnx
+    onnx-model-co-lfs vision/classification/vgg/model/vgg16-bn-7.tar.gz
 }
 
