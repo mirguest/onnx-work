@@ -66,6 +66,7 @@ onnx-onnx-build() { # build
                   -DONNX_USE_PROTOBUF_SHARED_LIBS=ON
 
     cmake --build .
+    cmake --install .
     
     popd
 }
