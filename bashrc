@@ -18,7 +18,13 @@ onnx--() {
 }
 
 setup-lcg() {
+    # LCG 101
     source /cvmfs/sft.cern.ch/lcg/views/LCG_101/x86_64-centos7-gcc11-opt/setup.sh
+
+    # protobuf 3 (onnx needs a newer protobuf)
+    export PATH=/cvmfs/sft.cern.ch/lcg/releases/protobuf/3.18.1-4cc72/x86_64-centos7-gcc11-opt/bin:$PATH
+    export CMAKE_PREFIX_PATH=/cvmfs/sft.cern.ch/lcg/releases/protobuf/3.18.1-4cc72/x86_64-centos7-gcc11-opt/bin:$CMAKE_PREFIX_PATH
+    export LD_LIBRARY_PATH=/cvmfs/sft.cern.ch/lcg/releases/protobuf/3.18.1-4cc72/x86_64-centos7-gcc11-opt/lib:$LD_LIBRARY_PATH
 }
 
 install-py-local() {
@@ -36,9 +42,41 @@ setup-py-local() {
     export PYTHONPATH=$ONNX_WORKSPACE/installed:$PYTHONPATH
 }
 
+##############################################################################
+# ONNX package built from source code
+##############################################################################
+
+onnx-onnx-co() { # checkout
+    pushd $ONNX_WORKSPACE
+    git clone --recursive https://github.com/onnx/onnx.git
+    # or using:
+    #   git submodule update --init --recursive
+    popd
+}
+
+onnx-onnx-build() { # build
+    local blddir=onnx-build
+    pushd $ONNX_WORKSPACE
+    
+    [ -d "$blddir" ] || mkdir $blddir
+
+    cd $blddir
+
+    cmake ../onnx -DCMAKE_INSTALL_PREFIX=$ONNX_WORKSPACE/installed \
+                  -DONNX_USE_PROTOBUF_SHARED_LIBS=ON
+
+    cmake --build .
+    
+    popd
+}
+
+##############################################################################
+# ONNX model
+##############################################################################
+
 onnx-model-co() { # checkout 
     pushd $ONNX_WORKSPACE
-    git clone https://github.com/onnx/onnx.git
+    git clone https://github.com/onnx/models.git
     popd
 }
 
