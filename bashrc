@@ -25,6 +25,7 @@ setup-lcg() {
     export PATH=/cvmfs/sft.cern.ch/lcg/releases/protobuf/3.18.1-4cc72/x86_64-centos7-gcc11-opt/bin:$PATH
     export CMAKE_PREFIX_PATH=/cvmfs/sft.cern.ch/lcg/releases/protobuf/3.18.1-4cc72/x86_64-centos7-gcc11-opt/bin:$CMAKE_PREFIX_PATH
     export LD_LIBRARY_PATH=/cvmfs/sft.cern.ch/lcg/releases/protobuf/3.18.1-4cc72/x86_64-centos7-gcc11-opt/lib:$LD_LIBRARY_PATH
+    export PKG_CONFIG_PATH=/cvmfs/sft.cern.ch/lcg/releases/protobuf/3.18.1-4cc72/x86_64-centos7-gcc11-opt/lib/pkgconfig:$PKG_CONFIG_PATH
 }
 
 install-py-local() {
