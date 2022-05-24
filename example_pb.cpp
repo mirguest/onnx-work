@@ -49,6 +49,23 @@ int main() {
         const auto& rawdata = tensor.raw_data();
 
         std::cout << "rawdata size: " << rawdata.size() << std::endl;
+
+        // try to read the buffer as float
+        char* p = const_cast<char*>(&rawdata[0]);
+
+        float* v = reinterpret_cast<float*>(p);
+
+        std::cout << "1st element: " << *v << std::endl;
+        std::cout << "2nd element: " << v[1] << std::endl;
+
+        int nelems = rawdata.size() / sizeof(float);
+        std::cout << "There are " << nelems << " elements after reinterpret_cast. " << std::endl;
+
+        std::cout << "The first 10 elements: ";
+        for (int i = 0; i < 10; ++i) {
+            std::cout << v[i] << " ";
+        }
+        std::cout << std::endl;
     }
 
     // in this example, float_data is empty
