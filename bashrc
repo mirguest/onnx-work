@@ -113,13 +113,18 @@ onnx-runtime-co() {
 
 onnx-runtime-build() {
     local blddir=onnxruntime-build
+    local config=Debug
 
     pushd $ONNX_WORKSPACE
 
     [ -d "$blddir" ] || mkdir $blddir
     cd $blddir
 
-    python $ONNX_WORKSPACE/onnxruntime/tools/ci_build/build.py --build_dir .
+    python $ONNX_WORKSPACE/onnxruntime/tools/ci_build/build.py --build_dir . \
+        --cmake_extra_defines CMAKE_INSTALL_PREFIX=$ONNX_WORKSPACE/installed \
+        --skip_tests
+
+    cmake --install $config
 
     popd
 }
