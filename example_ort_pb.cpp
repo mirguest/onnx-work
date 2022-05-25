@@ -33,6 +33,7 @@ int main() {
     const std::string model_dir = "/tmp/lint/onnx-workspace/models/vision/classification/vgg/model";
     const std::string model_path = model_dir + "/" + "vgg16-bn-7.onnx";
     const std::string input_file = model_dir + "/vgg16-bn/test_data_set_0/input_0.pb";
+    const std::string output_file = model_dir + "/vgg16-bn/test_data_set_0/output_0.pb";
 
     Ort::Env env(ORT_LOGGING_LEVEL_WARNING, "ENV");
     Ort::SessionOptions session_options;
@@ -130,6 +131,46 @@ int main() {
                                       input_tensors.size(),
                                       output_node_names.data(), 
                                       output_node_names.size());
+
+    // ref output
+    std::ifstream ss_ref(output_file, std::ios::binary);
+
+    ss_ref.seekg(0, std::ios::end);
+    auto size_ref = ss_ref.tellg();
+    ss_ref.seekg(0, std::ios::beg);
+
+    char* buffer_ref = new char[size_ref];
+    ss_ref.read(buffer_ref, size);
+    ss_ref.close();
+
+    std::cout << "ref file size: " << size_ref << std::endl;
+
+    ::onnx::TensorProto tensor_ref;
+
+    ::onnx::ParseProtoFromBytes(&tensor_ref, buffer_ref, size_ref);
+
+    const auto& rawdata_ref = tensor_ref.raw_data();
+
+    std::cout << "ref rawdata size: " << rawdata_ref.size() << std::endl;
+
+    // try to read the buffer as float
+    char* p_ref = const_cast<char*>(&rawdata_ref[0]);
+
+    float* v_ref = reinterpret_cast<float*>(p_ref);
+    int nelems_ref = rawdata_ref.size() / sizeof(float);
+
+    std::cout << "ref rawdata nelems: " << nelems_ref << std::endl;
+
+
+    // compare
+    const auto& output_tensor = output_tensors[0];
+    const float* v_output = output_tensor.GetTensorData<float>();
+
+    for (int i = 0; i < 10; ++i) {
+        std::cout << "[" << i << "] "
+                  << v_ref[i] << " " << v_output[i]
+                  << std::endl;
+    }
 
     return 0;
 }
