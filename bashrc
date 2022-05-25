@@ -41,6 +41,9 @@ install-py-local-() {
 setup-py-local() {
     export PATH=$ONNX_WORKSPACE/installed/bin:$PATH
     export PYTHONPATH=$ONNX_WORKSPACE/installed:$PYTHONPATH
+
+    export PKG_CONFIG_PATH=$ONNX_WORKSPACE/installed/lib64/pkgconfig:$PKG_CONFIG_PATH
+
 }
 
 ##############################################################################

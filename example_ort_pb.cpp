@@ -1,7 +1,7 @@
 // Description:
 //   Build C++ application with ONNX Runtime
 //
-//   $ g++ example_ort_pb.cpp -DONNX_ML -DONNX_NAMESPACE=onnx -I/tmp/lint/onnx-workspace/installed/include $(pkg-config --cflags --libs protobuf) -L/tmp/lint/onnx-workspace/installed/lib64 -lonnx -lonnx_proto -L/cvmfs/sft.cern.ch/lcg/views/LCG_101/x86_64-centos7-gcc11-opt/lib -lonnxruntime
+//   $ g++ example_ort_pb.cpp -DONNX_ML -DONNX_NAMESPACE=onnx -I/tmp/lint/onnx-workspace/installed/include $(pkg-config --cflags --libs protobuf) -L/tmp/lint/onnx-workspace/installed/lib64 -lonnx -lonnx_proto $(pkg-config --cflags --libs libonnxruntime)
 //
 // Reference:
 // - G4 11.0 Par04
