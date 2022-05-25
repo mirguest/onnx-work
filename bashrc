@@ -124,6 +124,7 @@ onnx-runtime-build() {
     cd $blddir
 
     python $ONNX_WORKSPACE/onnxruntime/tools/ci_build/build.py --build_dir . \
+        --build_shared_lib \
         --cmake_extra_defines CMAKE_INSTALL_PREFIX=$ONNX_WORKSPACE/installed \
         --skip_tests
 
