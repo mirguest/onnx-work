@@ -100,3 +100,26 @@ onnx-model-co-lfs-() {
     onnx-model-co-lfs vision/classification/vgg/model/vgg16-bn-7.tar.gz
 }
 
+##############################################################################
+# ONNX runtime built from source code
+##############################################################################
+
+onnx-runtime-co() {
+    pushd $ONNX_WORKSPACE
+    git clone --recursive https://github.com/Microsoft/onnxruntime
+    popd
+
+}
+
+onnx-runtime-build() {
+    local blddir=onnxruntime-build
+
+    pushd $ONNX_WORKSPACE
+
+    [ -d "$blddir" ] || mkdir $blddir
+    cd $blddir
+
+    python $ONNX_WORKSPACE/onnxruntime/tools/ci_build/build.py --build_dir .
+
+    popd
+}
